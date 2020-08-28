@@ -42,6 +42,11 @@ var bodydiv=document.createElement("div");
 bodydiv.setAttribute("class","container");
 bodydiv.setAttribute("id","bodydiv");
 
+var load=document.createElement("h1");
+load.innerText="LOADING...";
+var load2=document.createElement("h3");
+load2.innerText="THIS MAY TAKE A FEW SECONDS!";
+
 var createcard=(result:object)=>{
     let data=result["tracks"];
     for(var i=0;i<data.length;i++)
@@ -89,6 +94,8 @@ var recsongdb;
 
 var home=async()=>{
     try{
+        bodydiv.appendChild(load);
+        bodydiv.appendChild(load2);
         let data=await fetch("https://shazam.p.rapidapi.com/songs/list-artist-top-tracks?locale=en-US&id=40008598", 
         {
 	    "method": "GET",
@@ -103,7 +110,7 @@ var home=async()=>{
         topsongdb=data;
         console.log("topdb done!")
 
-        createcard(topsongdb);
+        //createcard(topsongdb);
 
         data=await fetch("https://shazam.p.rapidapi.com/songs/list-recommendations?locale=en-US&key=484129036", 
         {
@@ -116,7 +123,11 @@ var home=async()=>{
         });
         data=await data.json();
         recsongdb=data;
-        console.log("recdb done!")
+        console.log("recdb done!");
+
+        const myNode = document.getElementById("bodydiv");
+        myNode.innerHTML = '';
+        createcard(topsongdb);
 
     }catch(error){
         console.log(error);

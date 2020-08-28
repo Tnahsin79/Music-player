@@ -71,6 +71,10 @@ var hr1 = document.createElement("hr");
 var bodydiv = document.createElement("div");
 bodydiv.setAttribute("class", "container");
 bodydiv.setAttribute("id", "bodydiv");
+var load = document.createElement("h1");
+load.innerText = "LOADING...";
+var load2 = document.createElement("h3");
+load2.innerText = "THIS MAY TAKE A FEW SECONDS!";
 var createcard = function (result) {
     var data = result["tracks"];
     for (var i = 0; i < data.length; i++) {
@@ -108,11 +112,13 @@ var createcard = function (result) {
 var topsongdb;
 var recsongdb;
 var home = function () { return __awaiter(_this, void 0, void 0, function () {
-    var data, error_1;
+    var data, myNode, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 5, , 6]);
+                bodydiv.appendChild(load);
+                bodydiv.appendChild(load2);
                 return [4 /*yield*/, fetch("https://shazam.p.rapidapi.com/songs/list-artist-top-tracks?locale=en-US&id=40008598", {
                         "method": "GET",
                         "headers": {
@@ -128,7 +134,6 @@ var home = function () { return __awaiter(_this, void 0, void 0, function () {
                 //console.log(typeof(data),data);
                 topsongdb = data;
                 console.log("topdb done!");
-                createcard(topsongdb);
                 return [4 /*yield*/, fetch("https://shazam.p.rapidapi.com/songs/list-recommendations?locale=en-US&key=484129036", {
                         "method": "GET",
                         "headers": {
@@ -137,12 +142,16 @@ var home = function () { return __awaiter(_this, void 0, void 0, function () {
                         }
                     })];
             case 3:
+                //createcard(topsongdb);
                 data = _a.sent();
                 return [4 /*yield*/, data.json()];
             case 4:
                 data = _a.sent();
                 recsongdb = data;
                 console.log("recdb done!");
+                myNode = document.getElementById("bodydiv");
+                myNode.innerHTML = '';
+                createcard(topsongdb);
                 return [3 /*break*/, 6];
             case 5:
                 error_1 = _a.sent();
